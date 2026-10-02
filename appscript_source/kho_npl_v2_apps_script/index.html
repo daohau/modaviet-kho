@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html><head><base target="_top"><?!= include_('style'); ?></head>
+<body>
+<div class="app">
+  <header><div><h1><?= appTitle ?></h1><div id="env" class="sub">Đang tải...</div></div><div id="user" class="pill"></div></header>
+  <nav>
+    <button class="tab active" data-view="home">Tổng quan</button>
+    <button class="tab role-plan" data-view="reservation">Giữ tồn</button>
+    <button class="tab role-warehouse" data-view="receipt">Nhập kho</button>
+    <button class="tab role-warehouse" data-view="issue">Xuất kho</button>
+    <button class="tab role-warehouse" data-view="return">Trả NPL</button>
+    <button class="tab role-adjust" data-view="adjustment">Điều chỉnh / Đảo</button>
+    <button class="tab" data-view="stock">Tra tồn</button>
+    <button class="tab" data-view="documents">Chứng từ</button>
+    <button class="tab role-admin" data-view="system">Hệ thống</button>
+  </nav>
+  <main>
+    <section id="view-home" class="view active">
+      <div class="cards">
+        <div class="card"><b>Môi trường</b><span id="homeEnv">-</span></div>
+        <div class="card"><b>Vai trò</b><span id="homeRoles">-</span></div>
+        <div class="card"><b>Đồng bộ nguồn</b><span id="homeSync">-</span></div>
+        <div class="card"><b>Trạng thái hệ thống</b><span id="healthStatus">-</span></div>
+        <div class="card"><b>Tồn đầu</b><span id="openingCount">0 ứng viên</span></div>
+        <div class="card"><b>Trạng thái cutover</b><span id="openingStatus">Đang khóa</span></div>
+        <div class="card"><b>Phiên bản</b><span id="codeStatus">-</span></div>
+      </div>
+      <div class="notice">Môi trường thử nghiệm. File nguồn Modaviet chỉ được đọc/đồng bộ, không ghi ngược.</div>
+    </section>
+
+    <section id="view-reservation" class="view role-plan"><h2>Giữ tồn theo BBSX/M/SH</h2>
+      <div class="grid2"><label>Mã BBSX/M/SH<input id="pExecution" placeholder="Ví dụ S146926"></label><div class="fieldAction"><button id="btnLoadPlan">Tải nhu cầu NPL</button><button id="btnUseSuggested">Điền theo đề xuất</button></div></div>
+      <div id="pLines" class="tableWrap"></div><button class="primary" id="btnSaveReservations">Xác nhận giữ tồn</button>
+    </section>
+
+    <section id="view-receipt" class="view role-warehouse"><h2>Nhập kho theo ĐNMH</h2>
+      <div class="grid2"><label>NCC<select id="rSupplier"></select></label><label>ĐNMH<select id="rPr"></select></label><label>Ngày nhập<input id="rDate" type="date"></label><label>Số giao hàng<input id="rDelivery"></label><label>Người giao<input id="rDeliveredBy"></label><label>Ghi chú<input id="rNote"></label></div>
+      <div id="rLines" class="tableWrap"></div><button class="primary" id="btnPostReceipt">Ghi sổ nhập kho</button>
+    </section>
+
+    <section id="view-issue" class="view role-warehouse"><h2>Xuất kho cho sản xuất</h2>
+      <div class="grid2"><label>Mã BBSX/M/SH<input id="iExecution" placeholder="Ví dụ S146926"></label><label>Người nhận<input id="iReceiver"></label><label>Ngày xuất<input id="iDate" type="date"></label><label>Ghi chú<input id="iNote"></label></div>
+      <button id="btnLoadIssue">Tải vật tư đã giữ</button><div id="iLines" class="tableWrap"></div><button class="primary" id="btnPostIssue">Ghi sổ xuất kho</button>
+    </section>
+
+    <section id="view-return" class="view role-warehouse"><h2>Trả NPL từ sản xuất</h2>
+      <div class="grid2"><label>Mã BBSX/M/SH<input id="tExecution"></label><label>Ngày trả<input id="tDate" type="date"></label><label>Người trả<input id="tReturnedBy"></label><label>Ghi chú<input id="tNote"></label></div>
+      <button id="btnLoadReturn">Tải các dòng đã xuất</button><div id="tLines" class="tableWrap"></div><button class="primary" id="btnPostReturn">Ghi sổ trả kho dòng đã chọn</button>
+    </section>
+
+    <section id="view-adjustment" class="view role-adjust"><h2>Điều chỉnh và sửa sai có kiểm soát</h2>
+      <div class="panel"><h3>Điều chỉnh tồn kho</h3>
+        <div class="grid2"><label>Mã vật tư<input id="aMaterial"></label><div class="fieldAction"><button id="btnLoadAdjMaterial">Kiểm tra tồn</button><span id="aMaterialInfo" class="hint"></span></div><label>Ngày điều chỉnh<input id="aDate" type="date"></label><label>Loại<select id="aType"><option value="OUT">Giảm tồn</option><option value="IN">Tăng tồn</option></select></label><label>Số lượng<input id="aQty" type="number" min="0" step="0.001"></label><label>Đơn giá quản trị (chỉ cần khi tăng)<input id="aCost" type="number" min="0"></label><label>Lý do<select id="aReasonCode"><option value="COUNT_DIFFERENCE">Chênh lệch kiểm kê</option><option value="DAMAGE">Hư hỏng / mất mát</option><option value="DATA_ERROR">Sai dữ liệu</option><option value="OTHER">Khác</option></select></label><label>Diễn giải<input id="aReasonDetail"></label><label>Ghi chú<input id="aNote"></label></div>
+        <label class="checkline"><input id="aConfirm" type="checkbox"> Tôi xác nhận đây là điều chỉnh có kiểm soát và không sửa giao dịch cũ.</label>
+        <button class="primary" id="btnPostAdjustment">Ghi sổ điều chỉnh</button>
+      </div>
+      <div class="panel"><h3>Đảo giao dịch POSTED</h3><p class="hint">Dùng khi giao dịch nhập/xuất/trả/điều chỉnh vừa ghi sai. Hệ thống tạo giao dịch đảo mới, không xóa chứng từ gốc.</p>
+        <div class="grid2"><label>Mã chứng từ<input id="rvCode" placeholder="PN... / PX... / TL... / DC..."></label><div class="fieldAction"><button id="btnLoadReversal">Kiểm tra chứng từ</button><button id="btnOpenDocs">Tra cứu chứng từ</button></div><label>Lý do đảo<input id="rvReason"></label></div>
+        <div id="rvPreview" class="tableWrap"></div><label class="checkline"><input id="rvConfirm" type="checkbox"> Tôi đã kiểm tra chứng từ và xác nhận thực hiện đảo.</label>
+        <button class="danger" id="btnReverse">Đảo giao dịch</button>
+      </div>
+    </section>
+
+    <section id="view-stock" class="view"><h2>Tra cứu tồn kho</h2><div class="search"><input id="sQuery" placeholder="Gõ mã hoặc tên vật tư"><button id="btnSearchStock">Tìm</button></div><div id="sLines" class="tableWrap"></div></section>
+
+    <section id="view-documents" class="view"><h2>Tra cứu chứng từ</h2>
+      <p class="hint">Tra cứu trực tiếp trên Web App. Nhân viên không cần mở Google Sheet backend hoặc ghi nhớ số chứng từ.</p>
+      <div class="docFilters">
+        <label>Mã chứng từ<input id="dCode" placeholder="PN... / PX... / TL... / DC... / RV..."></label>
+        <label>Loại<select id="dType"><option value="">Tất cả</option><option value="RECEIPT">Nhập kho</option><option value="ISSUE">Xuất kho</option><option value="RETURN">Trả NPL</option><option value="ADJUSTMENT">Điều chỉnh / Đảo</option></select></label>
+        <label>Trạng thái<select id="dStatus"><option value="">Tất cả</option><option value="POSTED">POSTED</option><option value="REVERSED">REVERSED</option><option value="DRAFT">DRAFT</option></select></label>
+        <label>Từ ngày<input id="dFrom" type="date"></label>
+        <label>Đến ngày<input id="dTo" type="date"></label>
+        <label>Mã BBSX/M/SH<input id="dExecution" placeholder="S..."></label>
+        <label>Mã vật tư<input id="dMaterial" placeholder="Mã VT"></label>
+        <label>NCC<input id="dSupplier" placeholder="Mã NCC"></label>
+        <label>Người thao tác<input id="dUser" placeholder="email"></label>
+      </div>
+      <div class="fieldAction"><button id="btnDocsRecent">50 chứng từ gần nhất</button><button id="btnDocsSearch" class="primary">Tìm chứng từ</button></div>
+      <div id="dLines" class="tableWrap"></div>
+    </section>
+
+    <section id="view-system" class="view role-admin"><h2>Quản trị hệ thống</h2>
+      <div class="panel"><h3>Đồng bộ dữ liệu nguồn</h3><div class="fieldAction"><button id="btnSyncNow" class="primary">Đồng bộ ngay</button><button id="btnInstallTriggers">Cài đồng bộ tự động 10/15/60 phút</button></div><div id="syncLines" class="tableWrap"></div></div>
+      <div class="panel"><h3>Kiểm tra hệ thống</h3><button id="btnHealth">Chạy kiểm tra</button><div id="healthLines" class="tableWrap"></div></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+  <div id="busy" class="busy hidden"><div class="spinner"></div><div>Đang xử lý...</div></div>
+  <div id="modal" class="modalBackdrop hidden"><div class="modalCard"><div id="modalIcon" class="modalIcon">✓</div><h3 id="modalTitle">Hoàn tất</h3><div id="modalMessage" class="modalMessage"></div><div id="modalCode" class="modalCode hidden"></div><div id="modalDetails" class="modalDetails hidden"></div><div class="modalActions"><button id="modalViewDoc" class="hidden">Xem chứng từ</button><button id="modalOk" class="primary">OK</button></div></div></div>
+</div>
+<?!= include_('app'); ?>
+</body></html>

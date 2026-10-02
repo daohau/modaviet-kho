@@ -1,0 +1,27 @@
+{
+  "name": "modaviet-kho-npl-v2-backend",
+  "version": "0.1.0-phase3d",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "migrate": "node scripts/migrate.js",
+    "benchmark": "node scripts/benchmark.js",
+    "check": "node --check src/server.js && node --check src/app.js && node --check src/services/transaction-service.js && node --check src/routes/transactions.js && node --check src/routes/catalog.js && node --check scripts/migrate.js && node --check scripts/benchmark.js",
+    "seed": "node scripts/seed.js",
+    "regression": "node scripts/regression.js",
+    "benchmark:post": "node scripts/benchmark-post.js"
+  },
+  "dependencies": {
+    "@fastify/cors": "^10.0.0",
+    "@fastify/helmet": "^13.0.0",
+    "fastify": "^5.0.0",
+    "google-auth-library": "^9.15.0",
+    "pg": "^8.13.0",
+    "zod": "^3.24.0"
+  }
+}

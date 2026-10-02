@@ -1,0 +1,18 @@
+Pilot/Sheet,DB object,Mode,Notes
+DM_VẬT TƯ,material,READ-SYNC,Mã VT MISA là khóa chính
+DM_NHÀ CUNG CẤP,supplier,READ-SYNC,SupplierID khóa ổn định
+DM_ĐƠN HÀNG SẢN PHẨM,order_product_snapshot,READ-SYNC,Snapshot từ WebApp/Order
+DM_ĐNMH ĐANG MỞ,purchase_request_line,READ-SYNC,Trong Pilot DMSX vẫn SoT ĐNMH
+DL_GIỮ TỒN,reservation,DB-TXN,Giữ tồn theo execution/product/material
+DL_PHIẾU NHẬP,receipt_header,DB-TXN,POST atomic
+DL_CHI TIẾT NHẬP,receipt_line,DB-TXN,POST atomic
+DL_PHIẾU XUẤT,issue_header,DB-TXN,POST atomic
+DL_CHI TIẾT XUẤT,issue_line,DB-TXN,POST atomic
+DL_TRẢ KHO,production_return,DB-TXN,POST atomic
+SỔ_KHO,stock_ledger,DB-TXN,Append-only
+02_TỒN KHO,v_stock,READ-MODEL,Computed từ stock_balance+reservation
+RA_NGUỒN CÔNG NỢ,v_payable_source,READ-MODEL,Chỉ từ receipt POSTED
+RA_CHI PHÍ VẬT TƯ,v_material_cost,READ-MODEL,Issue - usable return
+NHẬT KÝ THAO TÁC,audit_log,DB-TXN,Cùng transaction nghiệp vụ
+HT_PHÂN QUYỀN,app_user_role,ADMIN-SYNC,Không dùng fallback production
+HT_CẤU HÌNH,env/config,DEPLOY-CONFIG,Opening Balance vẫn false

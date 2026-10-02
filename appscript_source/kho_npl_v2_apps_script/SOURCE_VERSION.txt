@@ -1,0 +1,33 @@
+MODAVIET - KHO NPL V2
+Source version: 2.3.2-functional-rc-doc-lookup
+Date: 2026-09-17
+Environment: THU_NGHIEM / PILOT
+Opening Balance POST: LOCKED
+Source write: DISABLED / READ ONLY
+
+Functional RC scope:
+- Role-based Web App: Giữ tồn / Nhập kho / Xuất kho / Trả NPL / Điều chỉnh / Đảo / Tra tồn / Chứng từ / Hệ thống.
+- Auto source snapshots: Order Product, DMSX, Material Master, Supplier Master, Active BBSX.
+- Scheduled sync install: DMSX+Progress 10 phút, Order 15 phút, Master 60 phút.
+- Reservation workflow from active BBSX + DMSX, with confirmation/reallocation and audit.
+- Append-only stock ledger for Receipt / Issue / Return / Adjustment / Reversal.
+- Controlled reversal for POSTED transactions; original transaction is preserved.
+- Opening Balance engine implemented but hard gated by PRODUCTION + dual flags + confirmation.
+- Friendly in-app modal; no browser alert/googleusercontent technical message.
+- BBSX/material/document code inputs auto uppercase.
+- Source production files remain read-only.
+
+Performance optimization / Cloud backend is deferred to a later phase by CEO decision.
+
+Hotfix 2.3.1:
+- Sync status UI only counts the 5 snapshot sources actually synchronized.
+- Reservation suggestion distributes shared available stock deterministically by required date/product.
+- Reservation confirmation revalidates inside LockService and is idempotent for both create/reallocate.
+- Reservation stores real order_code from DMSX instead of defaulting blindly to execution code.
+
+Functional UX 2.3.2:
+- New Chứng từ tab: recent documents + filters by document code/type/status/date/BBSX/material/supplier/user.
+- Users no longer need to open backend Sheets to find PN/PX/TL/DC/RV numbers.
+- Document detail is viewable from the Web App; successful transaction popup includes “Xem chứng từ”.
+- Authorized users can select a POSTED document from search and jump directly to reversal.
+- Reversal preview now separates “Giao dịch gốc” from “Tác động khi đảo” and shows current/projected stock.

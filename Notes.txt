@@ -1,0 +1,29 @@
+Đã tạo bộ context để chuyển sang máy khác.
+Các file chính:
+- [CODEX_HANDOFF.md](C:/xampp/htdocs/kho-v1/CODEX_HANDOFF.md): toàn bộ kiến trúc, logic, API, setup, UI/UX, quy tắc nghiệp vụ và hướng dẫn tiếp tục.
+- [CODEX_CONTEXT_EXPORT_2026-09-21.zip](C:/xampp/htdocs/kho-v1/CODEX_CONTEXT_EXPORT_2026-09-21.zip): archive bàn giao, khoảng 11,7 MB.
+- [kho_npl_current_2026-09-21.sql](C:/xampp/htdocs/kho-v1/database/kho_npl_current_2026-09-21.sql): dump database hiện tại, khoảng 4,6 MB.
+- [README.md](C:/xampp/htdocs/kho-v1/README.md): đã cập nhật liên kết tới tài liệu bàn giao.
+Archive bao gồm:
+- PHP/MySQL MVC
+- Apps Script source
+- Database schema và migration
+- Dữ liệu snapshot Google Sheet
+- Workbook gốc
+- Backend pilot
+- Database dump hiện tại
+- Tài liệu hướng dẫn Codex
+Trên máy mới:
+1. Giải nén archive.
+2. Tạo database kho_npl.
+3. Khôi phục dump:
+Get-Content -Raw database\kho_npl_current_2026-09-21.sql |
+  & C:\xampp\mysql\bin\mysql.exe -u root kho_npl
+4. Chạy ứng dụng:
+& C:\xampp\php\php.exe -S 127.0.0.1:8088 -t public
+5. Yêu cầu Codex:
+Đọc CODEX_HANDOFF.md trước khi làm việc.
+Đây là project Kho Nguyên Phụ Liệu V2 PHP/MySQL MVC.
+Giữ nguyên logic Apps Script, không ghi ngược Google Sheet.
+Yêu cầu mới của tôi là: ...
+Lưu ý: không thể xuất bộ nhớ nội bộ của Codex, nhưng CODEX_HANDOFF.md và archive đã chứa context cần thiết để Codex trên máy khác tiếp tục dự án.

@@ -1,0 +1,13 @@
+USE kho_npl;
+
+ALTER TABLE receipts
+  ADD COLUMN IF NOT EXISTS invoice_no VARCHAR(190) NULL AFTER delivery_note_no,
+  ADD COLUMN IF NOT EXISTS invoice_date DATE NULL AFTER invoice_no,
+  ADD COLUMN IF NOT EXISTS updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER created_at,
+  ADD COLUMN IF NOT EXISTS post_engine_status VARCHAR(40) NULL AFTER updated_at;
+
+ALTER TABLE receipt_lines
+  ADD COLUMN IF NOT EXISTS validation_status VARCHAR(30) NULL AFTER note,
+  ADD COLUMN IF NOT EXISTS validation_message VARCHAR(1000) NULL AFTER validation_status,
+  ADD COLUMN IF NOT EXISTS can_post TINYINT(1) NULL AFTER validation_message,
+  ADD COLUMN IF NOT EXISTS receipt_status_ref VARCHAR(40) NOT NULL DEFAULT 'DRAFT' AFTER can_post;
